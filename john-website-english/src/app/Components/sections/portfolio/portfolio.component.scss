@@ -1,0 +1,190 @@
+@import "~src/assets/variables";
+
+.donut {
+  left: -280px;
+  bottom: 200px
+}
+
+.dot {
+  right: -60px;
+  top: 120px
+}
+
+.scrollbar {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: visible;
+  margin-bottom: 80px;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: $btn-color;
+  border-radius: 10px;
+  transition: background-color 1s;
+
+  &:hover {
+    background-color: $btn-color-hover;
+  }
+}
+
+.section-title {
+  position: relative;
+  width: fit-content;
+  flex: 0 1 auto;
+}
+
+.cards-container {
+  height: 100%;
+
+  a {
+    display: block;
+    float: left;
+    width: 25%;
+    cursor: pointer;
+    text-decoration: none;
+    color: $main-text-color;
+  }
+
+  a:not(:last-child) {
+    margin-right: 50px;
+    margin-bottom: 50px;
+  }
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  width: 100%;
+  height: 300px;
+  background-color: #F6F6F6;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
+
+  img {
+    height: 150%;
+    width: auto;
+    transform: translateY(20%);
+    animation: up 1.5s ease-out;
+  }
+}
+
+@keyframes up {
+  from { transform: translateY(50%) }
+  to { transform: translateY(20%)}
+}
+
+.card-content {
+  padding: 20px 20px;
+  width: 100%;
+
+  .card-title {
+    font-weight: 400;
+    font-size: 1.75rem;
+  }
+
+  p {
+    margin-top: 10px;
+    width: 100%;
+    height: fit-content;
+    word-wrap: break-word;
+  }
+}
+
+
+/*----- MEDIA QUERIES -----*/
+
+/* Laptop L */
+@media only screen and (min-width: 1440px) and (max-width: 1919px) {
+
+}
+
+/* Laptop M */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+  .cards-container {
+    a {
+      width: 33.3%;
+    }
+  }
+}
+
+/* Small tablet to big tablet: from 768px to 1023px */
+@media only screen and (max-width: 1024px) {
+  .cards-container {
+    a {
+      width: 33.3%;;
+    }
+  }
+}
+
+/* Big tablets to 1200px (width smaller than the 1140px row */
+@media only screen and (max-width: 1200px) {
+  .background {
+    .dot {
+      right: 5%;
+    }
+
+    .donut {
+      left: -150px;
+    }
+  }
+
+  .cards-container {
+    a, a:not(:last-child) {
+      width: 47%;
+      margin-right: 2%;
+      margin-bottom: 5%;
+    }
+  }
+}
+
+/* Small phones to small tablets: from 481px to 767px */
+@media only screen and (max-width: 767px) {
+
+}
+
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px) {
+  .background {
+    .dot {
+      height: 15%;
+      right: -25%;
+    }
+  }
+
+  .cards-container {
+    a, a:not(:last-child) {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+}
+
+/* Very Small phone displays */
+@media only screen and (max-width: 375px) {
+  .background {
+    .dot {
+      display: none;
+    }
+  }
+}
+

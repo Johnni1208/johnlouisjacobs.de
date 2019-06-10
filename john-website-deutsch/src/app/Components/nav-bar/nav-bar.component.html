@@ -1,0 +1,16 @@
+<nav>
+  <div class="row full-height">
+    <a routerLink="/" class="logo" (click)="close_navbar()"><img src="assets/svg/logo-blue.svg" alt="Logo"></a>
+    
+    <ul class="main-nav" [ngClass]="active == true ? 'active' : ''">
+      <li><a class="nav-bar-link" routerLink="ueber" (click)="toggle_navbar()">über mich</a></li>
+      <li><a class="nav-bar-link" routerLink="portfolio" (click)="toggle_navbar()">portfolio</a></li>
+      <li><a class="btn btn-full btn-small" href="mailto:kontakt@johnlouisjacobs.de"
+             (click)="toggle_navbar()">Jetzt kontaktieren
+      </a></li>
+    </ul>
+  
+    <a class="mobile-nav-icon flex flex-center flex-justification"
+       (click)="toggle_navbar()"><i [ngClass]="navbar_icon[navbar_state]"></i></a>
+  </div>
+</nav>

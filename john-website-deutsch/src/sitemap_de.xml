@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://johnlouisjacobs.de</loc>
+    <lastmod>2019-03-31</lastmod>
+    <image:image>
+      <image:loc>https://johnlouisjacobs.de/assets/img/foto_von_john.png</image:loc>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://johnlouisjacobs.de/ueber</loc>
+    <lastmod>2019-03-31</lastmod>
+    <image:image>
+      <image:loc>https://johnlouisjacobs.de/assets/img/noch_ein_foto_von_john.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://johnlouisjacobs.de/portfolio</loc>
+    <lastmod>2019-03-31</lastmod>
+
+    <!-- Ecole Mobile -->
+    <image:image>
+      <image:loc>https://johnlouisjacobs.de/assets/img/portfolio-images/ecole-mockup.png</image:loc>
+    </image:image>
+  </url>
+</urlset>

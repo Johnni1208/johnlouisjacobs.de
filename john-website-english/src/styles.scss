@@ -1,0 +1,276 @@
+@import "assets/css/normalize.css";
+@import "assets/css/grid.css";
+@import "assets/css/animate.css";
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600');
+@import "assets/variables";
+
+/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+html,
+body {
+  color: $main-text-color;
+  background-color: #ffffff;
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  overscroll-behavior: none;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+::selection {
+  background: $color-complementary;
+  color: #ffffff;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-weight: 400;
+  font-size: 4rem;
+  margin-top: 130px;
+  position: relative;
+  width: fit-content;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: -20%;
+    height: 15px;
+    width: 80%;
+    background-color: $section-underline-color;
+    opacity: 0.5;
+  }
+}
+
+.row {
+  width: 1140px;
+  margin: 0 auto;
+  z-index: 3;
+  position: relative;
+}
+
+.row--flex{
+  display: flex;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center{
+  align-items: center;
+}
+
+.flex-justification {
+  justify-content: center;
+}
+
+.flex-flow--column{
+  flex-flow: column;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.box{
+  padding: 5% 0;
+}
+
+/* ------ BUTTON ----- */
+.btn:link,
+.btn:visited {
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 8px;
+  padding: 10px 15px;
+  border: 1px solid $btn-color;
+  transition: background-color 0.5s, border 0.5s, color 0.5s;
+
+  &:hover,
+  &:active {
+    background-color: $btn-color-hover;
+    border: 1px solid $btn-color-hover;
+    color: #ffffff;
+  }
+}
+
+.btn-small {
+  font-size: 0.75rem;
+}
+
+.btn-big {
+  font-size: 1rem;
+}
+
+.btn-full:link,
+.btn-full:visited {
+  background-color: $btn-color;
+  color: #ffffff;
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+  color: $btn-color;
+}
+
+
+/*----- BACKGROUND ----- */
+.background {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+
+  .donut {
+    width: 25%;
+    height: auto;
+    position: absolute;
+    opacity: .5;
+  }
+
+  .dot {
+    width: 7%;
+    height: auto;
+    position: absolute;
+    opacity: .5;
+  }
+}
+
+/*----- IMAGES -----*/
+.image {
+  border: 1px solid $main-text-color;
+  position: relative;
+  transform: translate(-25px, -25px);
+  transition: opacity 0.5s ease-out;
+  width: fit-content;
+  height: fit-content;
+
+
+
+  img {
+    transition: transform 1s ease-out;
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  .dots {
+    transition: transform 1s ease-out;
+    position: absolute;
+    opacity: 0.5;
+  }
+}
+
+.image-animate {
+  img {
+    transform: translate(25px, 25px);
+  }
+}
+
+/*----- MEDIA QUERIES -----*/
+/* Small display heights */
+@media only screen and (max-height: 720px) {
+  .col{
+    padding: 0;
+  }
+}
+
+/* 4k  and above */
+@media only screen and (min-width: 2560px) {
+  .row--box{
+    padding: 5% 0;
+  }
+}
+
+/* Big tablets to 1200px (width smaller than the 1140px row */
+@media only screen and (max-width: 1200px) {
+  .row {
+    padding: 0 5%;
+    width: 100vw;
+  }
+}
+
+/* Big Laptop but smaller than desktop */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+  .background {
+    .donut { width: 35%; }
+
+    .dot { width: 10%; }
+  }
+
+}
+
+/* Small tablet to big tablet: from 768px to 1023px */
+@media only screen and (max-width: 1024px) {
+  body, html {
+    font-size: 18px;
+  }
+
+  .background {
+    .donut { width: 35%; }
+
+    .dot { width: 10%; }
+  }
+}
+
+/* Small phones to small tablets: from 481px to 767px */
+@media only screen and (max-width: 767px) {
+  body, html {
+    font-size: 16px;
+  }
+}
+
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px) {
+  html,
+  body {
+    overflow-y: visible;
+    overflow-x: hidden;
+  }
+
+  .col {
+    height: 70%;
+    &:first-child {
+      margin-top: 140px;
+    }
+
+    &:last-child {
+      margin-bottom: 100px;
+      margin-top: 0;
+    }
+  }
+
+  .row--flex{
+    display: block;
+  }
+
+  .background .donut { width: 70% }
+  .background .dot { width: 40% }
+
+  .section-title{
+    width: unset;
+  }
+}

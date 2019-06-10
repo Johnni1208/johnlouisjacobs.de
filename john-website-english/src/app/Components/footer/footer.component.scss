@@ -1,0 +1,63 @@
+@import "../../../assets/variables";
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0 0 10px 0;
+  height: 60px;
+  z-index: 100;
+  animation:  fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from{ opacity: 0 }
+  to { opacity: 1 }
+}
+
+.copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  font-size: 0.6rem;
+  color: $bright-text-color;
+  height: 100%;
+  margin-right: 50px;
+}
+
+.social-media {
+  margin-right: 40px;
+  float: right;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  a {
+    font-size: 1.5rem;
+    color: $main-text-color;
+
+    &:first-child {
+      margin-right: 20px;
+    }
+
+    &:visited{
+      color: $main-text-color;
+    }
+  }
+}
+
+/*----- MEDIA QUERIES -----*/
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px){
+  footer{
+    position: fixed;
+    background: #ffffff;
+    padding-top: 10px;
+
+    .copy{
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -1,0 +1,116 @@
+@import "../../../../assets/variables";
+
+.caption {
+  .button-row {
+    .btn:first-child {
+      margin-right: 40px;
+    }
+  }
+}
+
+.image {
+  height: 50%;
+  margin: 0 auto;
+
+  .dots {
+    height: 40%;
+    bottom: 0;
+    right: -10%;
+  }
+}
+
+.image-animate {
+  .dots {
+    transform: translate(80px, 80px);
+  }
+}
+
+.donut {
+  bottom: -200px;
+  left: -200px;
+}
+
+.dot {
+  top: 40%;
+  left: 5%;
+}
+
+/*----- MEDIA QUERIES -----*/
+
+/* Laptop L */
+@media only screen and (min-width: 1440px) and (max-width: 1919px) {
+  .dot { top: 20% }
+}
+
+/* Laptop M */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+  .dot {
+    top: 20%
+  }
+
+  .donut {
+    bottom: -150px;
+    left: -150px
+  }
+}
+
+/* Small tablet to big tablet: from 768px to 1023px */
+@media only screen and (max-width: 1023px) {
+  .donut {
+    bottom: -100px;
+    left: -100px;
+  }
+  .dot { display: none; }
+
+  .image {
+    height: auto;
+  }
+
+  .caption {
+    .button-row {
+      .btn {
+        .btn-full{
+          width: 49%;
+        }
+
+        &:first-child {
+          margin-right: 1%;
+        }
+      }
+    }
+  }
+}
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px) {
+  .donut {
+    bottom: -100px;
+  }
+  .dot {
+    display: block;
+    width: 30%;
+    top: 20%;
+    left: 60%;
+  }
+}
+
+/* Small phone displays */
+@media only screen and (max-width: 375px) {
+  .image {
+    margin-left: 40px;
+
+    .dots {
+      height: 30%;
+    }
+  }
+
+  .image-animate .dots{
+    transform: translate(60px, 60px);
+  }
+
+  .caption {
+    .btn-full {
+      font-size: 1.1rem;
+    }
+  }
+
+}

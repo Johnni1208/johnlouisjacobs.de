@@ -1,0 +1,149 @@
+@import "../../../../assets/variables";
+
+.about-text {
+  line-height: 145%;
+
+  .link {
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+
+    a {
+      text-decoration: none;
+      color: $btn-color;
+      transition: color 0.2s;
+
+      &:hover {
+        color: $btn-color-hover;
+      }
+    }
+  }
+}
+
+.image {
+  height: 40%;
+  width: fit-content;
+  margin-left: 30px;
+
+  .dots {
+    height: 45%;
+    bottom: 0;
+    right: -30%;
+  }
+}
+
+.image-animate {
+  .dots {
+    transform: translate(90px, 80px);
+  }
+}
+
+.dot {
+  bottom: 10%;
+  left: 5%;
+}
+
+/*----- MEDIA QUERIES -----*/
+
+@media only screen and (max-height: 720px){
+  .image{
+    .dots{
+      display: none;
+    }
+  }
+
+  .col .about-text{
+    font-size: 0.9rem;
+  }
+}
+
+/* Laptop L */
+@media only screen and (min-width: 1440px) and (max-width: 1919px) {
+  .background .dot {
+    left: 2.5%
+  }
+}
+
+/* Small tablet to big tablet: from 768px to 1023px */
+@media only screen and (max-width: 1028px) {
+  .background .dot {
+    bottom: 4%;
+    left: 2.5%;
+  }
+
+  .image-animate .dots{
+    transform: translate(70px, 70px);
+  }
+
+}
+
+@media only screen and (max-width: 768px){
+  .section-title{
+    font-size: 3rem;
+  }
+
+  .col .about-text{
+    font-size: 0.9rem;
+  }
+
+  .image{
+    img{
+      width: 100%;
+      height: 100%;
+    }
+
+    .dots{
+      height: 35%;
+    }
+  }
+
+  .image-animate .dots{
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px) {
+
+  .section-title{
+    position: relative;
+
+    &:after{
+      right: unset;
+      left: 20%;
+      width: 60%;
+    }
+  }
+
+  .col {
+    margin-top: 0;
+
+    .about-text{
+      font-size: 1rem;
+    }
+
+    &:first-child{
+      margin-top: 20px;
+    }
+  }
+
+  .image{
+    margin-top: 60px;
+    margin-left: 20px;
+
+    .dots{
+      height: 45%;
+    }
+  }
+
+  .image-animate .dots{
+    transform: translate(35px, 35px);
+  }
+
+  .background .dot{
+    left: unset;
+    right: -30%;
+    top: 50%
+  }
+}
+
