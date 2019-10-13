@@ -150,6 +150,9 @@ h2 {
     height: auto;
     position: absolute;
     opacity: .5;
+    path{
+      fill:#7fc6f7
+    }
   }
 
   .dot {
@@ -157,6 +160,9 @@ h2 {
     height: auto;
     position: absolute;
     opacity: .5;
+    circle{
+      fill:#0480d6;
+    }
   }
 }
 
@@ -181,6 +187,9 @@ h2 {
     transition: transform 1s ease-out;
     position: absolute;
     opacity: 0.5;
+    circle {
+      fill:#7fc6f7;
+    }
   }
 }
 
@@ -272,5 +281,55 @@ h2 {
 
   .section-title{
     width: unset;
+  }
+}
+
+/* Darkmode colors */
+@media (prefers-color-scheme: dark) {
+  html,
+  body{
+    color: $dark-text-color;
+    background-color: $dark-background-color;
+  }
+
+  .section-title:after{
+    background-color: $dark-accent-color-bright;
+  }
+
+  .btn:link,
+  .btn:visited{
+    &:hover,
+    &:active {
+      background-color: $dark-btn-color-hover;
+      border: 1px solid $dark-btn-color-hover;
+    }
+  }
+
+  .btn-full:link,
+  .btn-full:visited {
+    background-color: $dark-btn-color;
+  }
+
+  .btn-ghost:link,
+  .btn-ghost:visited {
+    color: $dark-btn-color;
+  }
+
+  .image {
+    .dots{
+      circle{
+        fill: $dark-image-dots-color;
+      }
+    }
+  }
+
+  .background{
+    .dot circle{
+      fill: $dark-accent-color-darker
+    }
+
+    .donut path{
+      fill: $dark-accent-color-bright
+    }
   }
 }

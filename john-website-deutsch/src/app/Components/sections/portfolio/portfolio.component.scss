@@ -188,3 +188,17 @@
   }
 }
 
+/* Darkmode colors */
+@media (prefers-color-scheme: dark) {
+  .cards-container a {
+    color: $dark-text-color;
+  }
+
+  .card{
+    background-color: $dark-accent-color-darker;
+  }
+
+  .card-image{
+    background-color: $dark-accent-color-bright;
+  }
+}
