@@ -1,11 +1,12 @@
 version: 2.0
 jobs:
   build-german:
-    working_directory: ~/john-website-deutsch
+    working_directory: ~/websites/john-website-deutsch
     docker:
       - image: circleci/node:7.10
     steps:
-      - checkout
+      - checkout:
+          path: ~/websites
       - run:
           name: Echo branch
           command: echo ${CIRCLE_BRANCH}
