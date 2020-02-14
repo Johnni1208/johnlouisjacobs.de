@@ -16,7 +16,9 @@ jobs:
             - v1-dependencies-
       - run:
           name: Install local dependencies
-          command: npm install
+          command: |
+            npm i @angular/cli
+            npm install;
       - save-cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
