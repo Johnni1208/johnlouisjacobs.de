@@ -1,18 +1,84 @@
 version: 2.0
 jobs:
-  build:
+  build-german:
+    working_directory: ~/john-website-deutsch
+    docker:
+      - image: circleci/node:7.10
+    steps:
+      - checkout
+      - run:
+          name: Echo branch
+          command: echo ${CIRCLE_BRANCH}
+      - restore-cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install local dependencies
+          command: npm install
+      - save-cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Building
+          command: npm run build-prod
+      - save_cache:
+          key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          path:
+            - dist
+
+  build-english:
+    working_directory: ~/john-website-english
+      docker:
+          - image: circleci/node:7.10
+      steps:
+        - checkout
+        - run:
+            name: Echo branch
+            command: echo ${CIRCLE_BRANCH}
+        - restore-cache:
+            keys:
+              - v2-dependencies-{{ checksum "package.json" }}
+              - v2-dependencies-
+        - run:
+            name: Install local dependencies
+            command: npm install
+        - save-cache:
+            key: v2-dependencies-{{ checksum "package.json" }}
+            paths:
+              - node_modules
+        - run:
+            name: Building
+            command: npm run build-prod
+        - save_cache:
+            key: v1-dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+            path:
+              - dist
+
+  deploy-german:
+    working_directory: ./
     machine:
-      image: circleci/classic:latest
-    branches:
-          only:
-            - master
+      image: circleci/classic:lastest
     steps:
       - run:
-          name: Install LFTP
+          name: Install dependencies
           command: |
             sudo apt-get update;
             sudo apt-get install lftp;
-      - checkout
+      - restore-cache:
+          key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Send Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --exclude .git/ --exclude .circleci/ ./ ${site_name}/wp-content/themes/${theme}; quit"
+          name: Send German Via SFTP
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R dist /home/john/htdocs"
+
+
+workflows:
+  version: 2
+
+  build-german_and_deploy-german:
+    jobs:
+      - build-german
+#      - deploy-german:
+#          requires:
+#            - build-german
