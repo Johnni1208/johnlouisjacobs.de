@@ -67,7 +67,7 @@ jobs:
             - dist
 
   deploy-german:
-    working_directory: ./
+    working_directory: ./websites/john-website-deutsch
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -85,7 +85,7 @@ jobs:
             ls;
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R john-website-deutsch/dist /home/john/public_html"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R dist /home/john/public_html"
 
 
 workflows:
