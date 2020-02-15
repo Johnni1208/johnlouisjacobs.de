@@ -79,8 +79,13 @@ jobs:
       - restore-cache:
           key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
+          name: Show filetree
+          command: |
+            pwd;
+            ls;
+      - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R dist /home/john/public_html"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R john-website-deutsch/dist /home/john/public_html"
 
 
 workflows:
