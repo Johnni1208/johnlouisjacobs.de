@@ -69,7 +69,7 @@ jobs:
   deploy-german:
     working_directory: ./
     machine:
-      image: circleci/classic:lastest
+      image: ubuntu-1604:201903-01
     steps:
       - run:
           name: Install dependencies
