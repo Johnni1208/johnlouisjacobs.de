@@ -21,7 +21,6 @@ jobs:
           name: Install local dependencies
           command: |
             npm install;
-            npm rebuild node-sass
       - save-cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
@@ -35,21 +34,26 @@ jobs:
             - dist
 
   build-english:
-    working_directory: ~/john-website-english
+    working_directory: ~/websites/john-website-english
     docker:
-      - image: circleci/node:7.10
+        - image: circleci/node:lts
     steps:
-      - checkout
+      - checkout:
+          path: ~/websites
       - run:
           name: Echo branch
           command: echo ${CIRCLE_BRANCH}
+      - run:
+          name: Show Nodeversion
+          command: node -v
       - restore-cache:
           keys:
             - v2-dependencies-{{ checksum "package.json" }}
             - v2-dependencies-
       - run:
           name: Install local dependencies
-          command: npm install
+          command: |
+            npm install;
       - save-cache:
           key: v2-dependencies-{{ checksum "package.json" }}
           paths:
@@ -59,7 +63,7 @@ jobs:
           command: npm run build-prod
       - save_cache:
           key: v1-dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-          path:
+          paths:
             - dist
 
   deploy-german:
@@ -76,7 +80,7 @@ jobs:
           key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R dist /home/john/htdocs"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R dist /home/john/public_html"
 
 
 workflows:
@@ -85,6 +89,6 @@ workflows:
   build-german_and_deploy-german:
     jobs:
       - build-german
-#      - deploy-german:
-#          requires:
-#            - build-german
+      - deploy-german:
+          requires:
+            - build-german
