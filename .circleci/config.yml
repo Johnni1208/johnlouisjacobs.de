@@ -3,7 +3,7 @@ jobs:
   build-german:
     working_directory: ~/websites/john-website-deutsch
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:lts
     steps:
       - checkout:
           path: ~/websites
