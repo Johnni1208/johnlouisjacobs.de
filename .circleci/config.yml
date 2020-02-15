@@ -19,6 +19,7 @@ jobs:
           command: |
             npm i @angular/cli
             npm install;
+            npm rebuild node-sass
       - save-cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
