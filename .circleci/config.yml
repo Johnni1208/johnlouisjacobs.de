@@ -117,6 +117,7 @@ workflows:
       - deploy-german:
           requires:
             - build-german
+            - deploy-english
 
       - build-english
       - deploy-english:
