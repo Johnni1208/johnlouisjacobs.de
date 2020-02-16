@@ -78,13 +78,13 @@ jobs:
           key: dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Save all non angular files
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' --include 'en\/' /home/john/htdocs/johnlouisjacobs.de dist/john-website; quit"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' --include 'en\/' ${root_dir} dist/john-website; quit"
       - run:
           name: Show downloaded files
           command: ls dist/john-website
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website /home/john/htdocs/johnlouisjacobs.de; quit"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website ${root_dir}; quit"
 
   deploy-english:
     working_directory: ./websites/john-website-english
@@ -100,13 +100,13 @@ jobs:
           key: dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Save all non angular files
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' /home/john/htdocs/johnlouisjacobs.de/en dist/john-website; quit"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' ${root_dir}/en dist/john-website; quit"
       - run:
           name: Show downloaded files
           command: ls dist/john-website
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website /home/john/htdocs/johnlouisjacobs.de/en; quit"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website ${root_dir}/en; quit"
 
 workflows:
   version: 2
