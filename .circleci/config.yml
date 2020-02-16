@@ -85,7 +85,9 @@ jobs:
             ls;
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "rm -r /home/john/public_html/*; mirror -v -R dist /home/john/public_html; quit"
+          command: lftp sftp://${username}:${password}@${hostname} -e "
+          mirror -v -R --delete-first -O /home/john/public_html dist /home/john/public_html;
+          quit"
 
 
 workflows:
