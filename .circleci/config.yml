@@ -1,65 +1,73 @@
 version: 2.0
 jobs:
   build-german:
-    working_directory: ~/john-website-deutsch
+    working_directory: ~/websites/john-website-deutsch
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:lts
     steps:
-      - checkout
+      - checkout:
+          path: ~/websites
       - run:
           name: Echo branch
           command: echo ${CIRCLE_BRANCH}
       - restore-cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
+            - dependencies-german-{{ checksum "package.json" }}
+            - dependencies-german-
       - run:
-          name: Install local dependencies
-          command: npm install
+          name: Install dependencies
+          command: npm install;
       - save-cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: dependencies-german-{{ checksum "package.json" }}
           paths:
             - node_modules
       - run:
           name: Building
           command: npm run build-prod
+      - run:
+          name: Copy sitemap
+          command: cp src/sitemap*.xml dist/john-website
       - save_cache:
-          key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - dist
 
   build-english:
-    working_directory: ~/john-website-english
+    working_directory: ~/websites/john-website-english
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:lts
     steps:
-      - checkout
+      - checkout:
+          path: ~/websites
       - run:
           name: Echo branch
           command: echo ${CIRCLE_BRANCH}
       - restore-cache:
           keys:
-            - v2-dependencies-{{ checksum "package.json" }}
-            - v2-dependencies-
+            - dependencies-english-{{ checksum "package.json" }}
+            - dependencies-english-
       - run:
-          name: Install local dependencies
-          command: npm install
+          name: Install dependencies
+          command: npm install;
       - save-cache:
-          key: v2-dependencies-{{ checksum "package.json" }}
+          key: dependencies-english-{{ checksum "package.json" }}
           paths:
             - node_modules
       - run:
           name: Building
           command: npm run build-prod
+      - run:
+          name: Copy sitemap
+          command: cp src/sitemap*.xml dist/john-website
       - save_cache:
-          key: v1-dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-          path:
+          key: dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
             - dist
 
   deploy-german:
-    working_directory: ./
+    working_directory: ./websites/john-website-deutsch
     machine:
-      image: circleci/classic:lastest
+      image: ubuntu-1604:201903-01
     steps:
       - run:
           name: Install dependencies
@@ -67,18 +75,51 @@ jobs:
             sudo apt-get update;
             sudo apt-get install lftp;
       - restore-cache:
-          key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Save all non angular files
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' --include 'en\/' ${root_dir} dist/john-website; quit"
+      - run:
+          name: Show downloaded files
+          command: ls dist/john-website
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R dist /home/john/htdocs"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website ${root_dir}; quit"
 
+  deploy-english:
+    working_directory: ./websites/john-website-english
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update;
+            sudo apt-get install lftp;
+      - restore-cache:
+          key: dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Save all non angular files
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' ${root_dir}/en dist/john-website; quit"
+      - run:
+          name: Show downloaded files
+          command: ls dist/john-website
+      - run:
+          name: Send German Via SFTP
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website ${root_dir}/en; quit"
 
 workflows:
   version: 2
 
-  build-german_and_deploy-german:
+  build_and_deploy:
     jobs:
       - build-german
-#      - deploy-german:
-#          requires:
-#            - build-german
+      - deploy-german:
+          requires:
+            - build-german
+            - deploy-english
+
+      - build-english
+      - deploy-english:
+          requires:
+            - build-english
