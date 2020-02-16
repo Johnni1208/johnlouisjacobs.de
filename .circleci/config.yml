@@ -79,13 +79,14 @@ jobs:
       - restore-cache:
           key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Show filetree
-          command: |
-            pwd;
-            ls;
+          name: Download all non angular files
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '*.js' --exclude '*.css' --exclude '*.html' --exclude 'assets/' /home/john/public_html dist/john-website; quit"
+      - run:
+          name: Show downloaded files
+          command: ls dist/john-website
       - run:
           name: Send German Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist /home/john/public_html"
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website /home/john/public_html; quit"
 
 
 workflows:
