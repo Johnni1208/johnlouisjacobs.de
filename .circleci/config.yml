@@ -1,5 +1,24 @@
 version: 2.0
 jobs:
+  download-dependencies:
+    working_directory: ~/websites/john-website-deutsch
+      docker:
+          - image: circleci/node:lts
+      steps:
+        - checkout:
+            path: ~/websites
+        - restore-cache:
+            keys:
+              - dependencies-{{ checksum "package.json" }}
+              - dependencies-
+        - run:
+            name: Install dependencies
+            command: npm install;
+        - save-cache:
+            key: dependencies-{{ checksum "package.json" }}
+            paths:
+              - node_modules
+
   build-german:
     working_directory: ~/websites/john-website-deutsch
     docker:
@@ -10,26 +29,15 @@ jobs:
       - run:
           name: Echo branch
           command: echo ${CIRCLE_BRANCH}
-      - run:
-          name: Show Nodeversion
-          command: node -v
       - restore-cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run:
-          name: Install local dependencies
-          command: |
-            npm install;
-      - save-cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+            - dependencies-{{ checksum "package.json" }}
+            - dependencies-
       - run:
           name: Building
           command: npm run build-prod
       - save_cache:
-          key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - dist
 
@@ -43,26 +51,15 @@ jobs:
       - run:
           name: Echo branch
           command: echo ${CIRCLE_BRANCH}
-      - run:
-          name: Show Nodeversion
-          command: node -v
       - restore-cache:
           keys:
-            - v2-dependencies-{{ checksum "package.json" }}
-            - v2-dependencies-
-      - run:
-          name: Install local dependencies
-          command: |
-            npm install;
-      - save-cache:
-          key: v2-dependencies-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+            - dependencies-{{ checksum "package.json" }}
+            - dependencies-
       - run:
           name: Building
           command: npm run build-prod
       - save_cache:
-          key: v1-dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - dist
 
@@ -77,9 +74,9 @@ jobs:
             sudo apt-get update;
             sudo apt-get install lftp;
       - restore-cache:
-          key: v1-dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Download all non angular files
+          name: Save all non angular files
           command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' --include 'en\/' /home/john/htdocs/johnlouisjacobs.de dist/john-website; quit"
       - run:
           name: Show downloaded files
@@ -88,13 +85,44 @@ jobs:
           name: Send German Via SFTP
           command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website /home/john/htdocs/johnlouisjacobs.de; quit"
 
+  deploy-english:
+    working_directory: ./websites/john-website-english
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update;
+            sudo apt-get install lftp;
+      - restore-cache:
+          key: dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Save all non angular files
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v --exclude '.*\.js' --exclude '.*\.css' --exclude '.*\.html' --exclude 'assets\/.*' /home/john/htdocs/johnlouisjacobs.de/en dist/john-website; quit"
+      - run:
+          name: Show downloaded files
+          command: ls dist/john-website
+      - run:
+          name: Send German Via SFTP
+          command: lftp sftp://${username}:${password}@${hostname} -e "mirror -v -R --delete-first dist/john-website /home/john/htdocs/johnlouisjacobs.de/en; quit"
 
 workflows:
   version: 2
 
-  build-german_and_deploy-german:
+  build_and_deploy:
     jobs:
-      - build-german
+      - download-dependencies
+      - build-german:
+          requires:
+            - download-dependencies
       - deploy-german:
           requires:
             - build-german
+
+      - build-english:
+          requires:
+            - download-dependencies
+      - deploy-english:
+          requires:
+            - build-english
