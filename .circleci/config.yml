@@ -36,6 +36,9 @@ jobs:
       - run:
           name: Building
           command: npm run build-prod
+      - run:
+          name: Copy sitemap
+          command: cp src/sitemap*.xml dist/john-website
       - save_cache:
           key: dist-german-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
@@ -58,6 +61,9 @@ jobs:
       - run:
           name: Building
           command: npm run build-prod
+      - run:
+          name: Copy sitemap
+          command: cp src/sitemap*.xml dist/john-website
       - save_cache:
           key: dist-english-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
