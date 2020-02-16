@@ -113,12 +113,12 @@ workflows:
 
   build_and_deploy:
     jobs:
-      - build-german:
+      - build-german
       - deploy-german:
           requires:
             - build-german
 
-      - build-english:
+      - build-english
       - deploy-english:
           requires:
             - build-english
