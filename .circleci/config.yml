@@ -1,24 +1,5 @@
 version: 2.0
 jobs:
-  download-dependencies:
-    working_directory: ~/websites/john-website-deutsch
-    docker:
-        - image: circleci/node:lts
-    steps:
-      - checkout:
-          path: ~/websites
-      - restore-cache:
-          keys:
-            - dependencies-{{ checksum "package.json" }}
-            - dependencies-
-      - run:
-          name: Install dependencies
-          command: npm install;
-      - save-cache:
-          key: dependencies-{{ checksum "package.json" }}
-          paths:
-            - node_modules
-
   build-german:
     working_directory: ~/websites/john-website-deutsch
     docker:
@@ -31,8 +12,15 @@ jobs:
           command: echo ${CIRCLE_BRANCH}
       - restore-cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}
-            - dependencies-
+            - dependencies-german-{{ checksum "package.json" }}
+            - dependencies-german-
+      - run:
+          name: Install dependencies
+          command: npm install;
+      - save-cache:
+          key: dependencies-german-{{ checksum "package.json" }}
+          paths:
+            - node_modules
       - run:
           name: Building
           command: npm run build-prod
@@ -56,8 +44,15 @@ jobs:
           command: echo ${CIRCLE_BRANCH}
       - restore-cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}
-            - dependencies-
+            - dependencies-english-{{ checksum "package.json" }}
+            - dependencies-english-
+      - run:
+          name: Install dependencies
+          command: npm install;
+      - save-cache:
+          key: dependencies-english-{{ checksum "package.json" }}
+          paths:
+            - node_modules
       - run:
           name: Building
           command: npm run build-prod
@@ -118,17 +113,12 @@ workflows:
 
   build_and_deploy:
     jobs:
-      - download-dependencies
       - build-german:
-          requires:
-            - download-dependencies
       - deploy-german:
           requires:
             - build-german
 
       - build-english:
-          requires:
-            - download-dependencies
       - deploy-english:
           requires:
             - build-english
