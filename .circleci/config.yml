@@ -2,22 +2,22 @@ version: 2.0
 jobs:
   download-dependencies:
     working_directory: ~/websites/john-website-deutsch
-      docker:
-          - image: circleci/node:lts
-      steps:
-        - checkout:
-            path: ~/websites
-        - restore-cache:
-            keys:
-              - dependencies-{{ checksum "package.json" }}
-              - dependencies-
-        - run:
-            name: Install dependencies
-            command: npm install;
-        - save-cache:
-            key: dependencies-{{ checksum "package.json" }}
-            paths:
-              - node_modules
+    docker:
+        - image: circleci/node:lts
+    steps:
+      - checkout:
+          path: ~/websites
+      - restore-cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}
+            - dependencies-
+      - run:
+          name: Install dependencies
+          command: npm install;
+      - save-cache:
+          key: dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
 
   build-german:
     working_directory: ~/websites/john-website-deutsch
