@@ -178,7 +178,7 @@ h2 {
 
 
   img {
-    transition: transform 1s ease-out;
+    transition: 1s ease-out;
     max-height: 100%;
     max-width: 100%;
   }
@@ -319,6 +319,14 @@ h2 {
     .dots{
       circle{
         fill: $dark-image-dots-color;
+      }
+    }
+
+    img {
+      opacity: .75;
+
+      &:hover{
+        opacity: 1;
       }
     }
   }
