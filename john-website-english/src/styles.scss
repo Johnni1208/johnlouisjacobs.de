@@ -201,9 +201,13 @@ h2 {
 
 /*----- MEDIA QUERIES -----*/
 /* Small display heights */
-@media only screen and (max-height: 720px) {
+@media only screen and (max-height: 768px) {
   .col{
     padding: 0;
+  }
+
+  .box{
+    padding: 2.5% 0;
   }
 }
 
